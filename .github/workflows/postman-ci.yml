@@ -20,11 +20,10 @@ jobs:
       - name: Run Postman tests
         run: newman run ./postman-automation-demo.postman_collection.json \
           --environment ./postman-automation-demo-env.postman_environment.json \
-          --reporter-htmlextra \
-          --reporter-htmlextra-export ./postman/report.html 
+          -r htmlextra 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: my-report
-          path: my-report/
+          path: ./newman/
           retention-days: 30
