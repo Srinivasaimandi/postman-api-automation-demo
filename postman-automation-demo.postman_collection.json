@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "9802fc7a-bcb3-4dd0-89cb-703274e9e1d0",
+		"name": "postman-automation-demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44556644",
+		"_collection_link": "https://srinivasa-imandi-3952394.postman.co/workspace/srinivasa-imandi's-Workspace~b3340a43-3a8e-46a0-8e8e-db662261c525/collection/44556644-9802fc7a-bcb3-4dd0-89cb-703274e9e1d0?action=share&source=collection_link&creator=44556644"
+	},
+	"item": [
+		{
+			"name": "add-book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json_body = pm.response.json();\r",
+							"pm.environment.set(\"book_id\", json_body.ID);\r",
+							"\r",
+							"pm.test(\"validate the status code to be 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(json_body).to.have.property('ID');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"validate response message\", function(){\r",
+							"    pm.expect(json_body.Msg).to.eql(\"successfully added\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Headers cookies response time validation\", function(){\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json;charset=UTF-8\");\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let var_isbn = \"rs\" + pm.variables.replaceIn('{{$randomInt}}') \r",
+							"pm.collectionVariables.set(\"isbn\", var_isbn);\r",
+							"pm.collectionVariables.set(\"aisle\", pm.variables.replaceIn('{{$randomInt}}'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Learn Appium Automation with Java\",\r\n    \"isbn\": \"{{isbn}}\",\r\n    \"aisle\": \"{{aisle}}\",\r\n    \"author\": \"{{author}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/Library/Addbook.php",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"Library",
+						"Addbook.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json_body = pm.response.json();\r",
+							"const get_book_schema = {\r",
+							"  \"title\": \"Generated schema for Root\",\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"      \"book_name\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"isbn\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"aisle\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"author\": {\r",
+							"        \"type\": \"string\"\r",
+							"      }\r",
+							"    },\r",
+							"    \"required\": [\r",
+							"      \"book_name\",\r",
+							"      \"isbn\",\r",
+							"      \"aisle\",\r",
+							"      \"author\"\r",
+							"    ]\r",
+							"  }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"validate response json schema\", function(){\r",
+							"    pm.response.to.have.jsonSchema(get_book_schema);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"validate the aisle\", function() {\r",
+							"    pm.expect(json_body[0].aisle).to.eql(pm.collectionVariables.get(\"aisle\"));\r",
+							"})\r",
+							"pm.test(\"validate the isbn\", function () {\r",
+							"    pm.expect(json_body[0].isbn).to.eql(pm.collectionVariables.get(\"isbn\"));\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/Library/GetBook.php?ID={{book_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"Library",
+						"GetBook.php"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "{{book_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json_body = pm.response.json();\r",
+							"const delete_book_schema = {\r",
+							"  \"title\": \"Generated schema for Root\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"msg\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"msg\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"validate response json schema\", function(){\r",
+							"    pm.response.to.have.jsonSchema(delete_book_schema);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"validate response message\", function(){\r",
+							"    pm.expect(json_body.msg).to.eql(\"book is successfully deleted\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ID\": \"{{book_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/Library/DeleteBook.php",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"Library",
+						"DeleteBook.php"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "isbn",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "aisle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "author",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
