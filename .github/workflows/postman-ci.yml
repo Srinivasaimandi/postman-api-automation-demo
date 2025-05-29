@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: lts/*
       - name: Install dependencies
-        run: npm ci
+        run: npm install -g
       - name: Run Postman tests
         run: "newman run postman-automation-demo.postman_collection.json --environment postman-automation-demo-env.postman_environment.json -r htmlextra"
       - uses: actions/upload-artifact@v4
