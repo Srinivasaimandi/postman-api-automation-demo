@@ -1,6 +1,6 @@
-# Playwright Automation Demo
+# Postman Api Automation Demo
 ## ❓What is this Repository about?
-This repository contains demo test automation scripts built with Playwright for the following websites
+This repository contains demo test automation scripts built with Postman for the following websites
   - http://rahulshettyacademy.com
   - https://reqres.in
 
@@ -9,9 +9,10 @@ This repository contains demo test automation scripts built with Playwright for 
   - setup node: [Windows][1] | [Ubuntu][2] | [macOS][3]
 
 **Setup**
-- Open a terminal in the root of the repository and install the dependencies
+- Open a terminal and install the dependencies using the below command at global level
 
-  **```npm install```**
+  **```npm install -g newman```**
+  **```npm install -g newman-reporter-htmlextra```**
 
 **Running the scripts**
 - run the below command to run the postman collection against an environment
