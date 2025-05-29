@@ -11,7 +11,7 @@ This repository contains demo test automation scripts built with Postman for the
 **Setup**
 - Open a terminal and install the dependencies using the below command at global level
 
-  **```npm install -g newman```**
+  **```npm install -g newman```** <br>
   **```npm install -g newman-reporter-htmlextra```**
 
 **Running the scripts**
