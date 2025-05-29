@@ -10,11 +10,11 @@ jobs:
           with:
             node-version: lts/*
         - name: Install newman
-          run: npm i newman
+          run: "npm i newman"
         - name: Install reporting
-          run: npm i newman-reporter-htmlextra
+          run: "npm i newman-reporter-htmlextra"
         - name: Run Postman tests
-          run: newman run postman-automation-demo.postman_collection.json --environment postman-automation-demo-env.postman_environment.json -r htmlextra 
+          run: "newman run postman-automation-demo.postman_collection.json --environment postman-automation-demo-env.postman_environment.json -r htmlextra" 
         - uses: actions/upload-artifact@v4
           if: ${{ !cancelled() }}
           with:
